@@ -1,0 +1,32 @@
+FROM ubuntu:quantal
+
+# Upgrade System
+RUN apt-get update -y; \
+    apt-get upgrade -y
+
+# Install Dependencies
+RUN apt-get install -y software-properties-common python-software-properties python g++ make curl unzip; \
+    add-apt-repository ppa:chris-lea/node.js; \
+    apt-get update -y; \
+    apt-get install -y nodejs
+
+# Install node deps
+RUN wget -O - {{package}} | tar -C /ghost/ -zxv
+
+# Install release
+RUN cd ghost; \
+    npm config set strict-ssl false; \
+    npm config set registry "http://registry.npmjs.org/"; \
+    npm install --production
+
+# Add source
+RUN wget -O - {{source}} | tar -C /ghost/ -zxv
+
+# generate configuration file
+RUN wget -O - {{ghostconfig}} | tar -C /ghost/ -zxv
+RUN cd ghost; node ghostconfig.js
+
+EXPOSE 2368
+ENV NODE_ENV production
+CMD cd ghost; \
+    npm start
