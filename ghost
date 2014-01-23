@@ -23,6 +23,9 @@ RUN cd ghost; \
 RUN wget -O - {{source}} | tar -C /ghost/ -zxv
 
 # generate configuration file
+ENV public_hostname {{public_hostname}}
+ENV mailgun_username {{mailgun_username}}
+ENV mailgun_password {{mailgun_password}}
 RUN wget -O - {{ghostconfig}} | tar -C /ghost/ -zxv
 RUN cd ghost; node ghostconfig.js
 
