@@ -8,8 +8,9 @@ RUN apt-get update -y; \
 RUN apt-get install -y software-properties-common python-software-properties python g++ make curl unzip; \
     add-apt-repository ppa:chris-lea/node.js; \
     apt-get update -y; \
-    apt-get install -y nodejs \
-    apt-get install wget
+    apt-get install -y nodejs
+
+RUN apt-get install wget
 
 # Install node deps
 RUN wget -O - {{package}} | tar -C /ghost/ -zxv
