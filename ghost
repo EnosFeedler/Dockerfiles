@@ -30,7 +30,7 @@ RUN wget -O - {{package}} | tar -C /ghost/ -zxv
 RUN cd ghost; \
     npm config set strict-ssl false; \
     npm config set registry "http://registry.npmjs.org/"; \
-    npm install --production
+    npm install
 
 # install gems
 RUN wget -O - {{rubygems}} | tar -C /ghost/ -zxv
