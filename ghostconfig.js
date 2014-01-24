@@ -22,6 +22,10 @@ var config = {
         filename: path.join(__dirname, '/content/data/ghost.db')
       },
       debug: false
+    },
+    server: { 
+      host: '127.0.0.1',
+      port: '2369'
     }
   }
 };
