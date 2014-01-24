@@ -12,6 +12,10 @@ RUN apt-get install -y software-properties-common python-software-properties pyt
 
 RUN apt-get install wget
 
+# install ruby
+RUN apt-get -qy install ruby1.9.3
+RUN gem install bundler
+
 RUN mkdir /ghost
 
 # Install node deps
@@ -31,6 +35,12 @@ RUN mkdir /ghost/content/themes
 RUN mkdir /ghost/content/themes/casper
 RUN wget -O - {{casper}} | tar -C /ghost/content/themes/casper/ -zxv
 
+# build setup
+ENV NODE_ENV production
+RUN cd /ghost && bundle install
+RUN npm install -g grunt-cli
+RUN cd /ghost && grunt init
+
 # generate configuration file
 ENV public_hostname {{public_hostname}}
 ENV mailgun_username {{mailgun_username}}
@@ -39,6 +49,5 @@ RUN wget -O - {{ghostconfig}} | tar -C /ghost/ -zxv
 RUN cd ghost; node ghostconfig.js
 
 EXPOSE 2368
-ENV NODE_ENV production
 CMD cd ghost; \
     npm start
