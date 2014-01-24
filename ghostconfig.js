@@ -25,7 +25,7 @@ var config = {
     },
     server: { 
       host: '0.0.0.0',
-      port: '2369'
+      port: '2368'
     }
   }
 };
