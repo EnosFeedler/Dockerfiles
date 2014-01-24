@@ -48,6 +48,7 @@ ENV NODE_ENV production
 
 # add grunt file
 RUN wget -O - {{gruntfile}} | tar -C /ghost/ -zxv
+RUN cd /ghost && grunt shell:bourbon
 RUN cd /ghost && grunt prod
 
 # generate configuration file
