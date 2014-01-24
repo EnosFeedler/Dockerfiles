@@ -40,8 +40,6 @@ RUN cd /ghost && bundle install
 RUN wget -O - {{source}} | tar -C /ghost/ -zxv
 
 # add default theme
-RUN mkdir /ghost/content/themes
-RUN mkdir /ghost/content/themes/casper
 RUN wget -O - {{casper}} | tar -C /ghost/content/themes/casper/ -zxv
 
 # set production
