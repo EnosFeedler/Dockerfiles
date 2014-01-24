@@ -36,10 +36,12 @@ RUN cd ghost; \
 RUN wget -O - {{rubygems}} | tar -C /ghost/ -zxv
 RUN cd /ghost && bundle install
 
+# add default theme
+RUN mkdir -p /ghost/content/themes/casper
+
 # Add source
 RUN wget -O - {{source}} | tar -C /ghost/ -zxv
 
-# add default theme
 RUN wget -O - {{casper}} | tar -C /ghost/content/themes/casper/ -zxv
 
 # set production
