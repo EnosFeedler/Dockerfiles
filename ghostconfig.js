@@ -26,7 +26,7 @@ var config = {
   }
 };
 
-var config_src = 'modules.export = ' + JSON.stringify(config) + ';';
+var config_src = 'module.exports = ' + JSON.stringify(config) + ';';
 
 fs.writeFile(__dirname + '/config.js', config_src, 'utf8', function (err) {
   console.log(err);
