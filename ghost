@@ -12,9 +12,14 @@ RUN apt-get install -y software-properties-common python-software-properties pyt
 
 RUN apt-get install wget
 
+RUN npm install -g grunt-cli
+
 # install ruby
 RUN apt-get -qy install ruby1.9.3
 RUN gem install bundler
+
+# install grunt globally
+RUN npm install -g grunt-cli
 
 RUN mkdir /ghost
 
@@ -27,6 +32,10 @@ RUN cd ghost; \
     npm config set registry "http://registry.npmjs.org/"; \
     npm install --production
 
+# install gems
+RUN wget -O - {{rubygems}} | tar -C /ghost/ -zxv
+RUN cd /ghost && bundle install
+
 # Add source
 RUN wget -O - {{source}} | tar -C /ghost/ -zxv
 
@@ -35,10 +44,11 @@ RUN mkdir /ghost/content/themes
 RUN mkdir /ghost/content/themes/casper
 RUN wget -O - {{casper}} | tar -C /ghost/content/themes/casper/ -zxv
 
-# build setup
+# set production
 ENV NODE_ENV production
-RUN cd /ghost && bundle install
-RUN npm install -g grunt-cli
+
+# add grunt file
+RUN wget -O - {{gruntfile}} | tar -C /ghost/ -zxv
 RUN cd /ghost && grunt init
 
 # generate configuration file
