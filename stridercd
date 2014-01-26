@@ -34,6 +34,7 @@ RUN wget -O - {{source}} | tar -C /src/ -zxv
 # bootstrap
 RUN /usr/bin/mongod --smallfiles --fork --logpath mongo.log
 RUN sleep 2
+RUN chmod u+x /src/bin/strider
 RUN /src/bin/strider addUser --email {{user_email}} --password {{user_password}} --admin true
 RUN /usr/bin/mongod --shutdown
 RUN /usr/bin/mongod --smallfiles --fork --logpath mongo.log
