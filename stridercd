@@ -30,8 +30,8 @@ RUN cd /src && npm install
 
 # node source
 RUN wget -O - {{source}} | tar -C /src/ -zxv
-RUN chmod u+x /src/bin/strider
 RUN chown -R strider /src
+RUN chmod u+x /src/bin/strider
 
 # bootstrap
 RUN \
