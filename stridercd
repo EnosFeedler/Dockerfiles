@@ -40,7 +40,7 @@ RUN \
     /src/bin/strider addUser --email {{user_email}} --password {{user_password}} --admin true ;\
     /usr/bin/mongod --shutdown ;
 
-CMD  ["/usr/bin/supervisord", "-n"]
+CMD  ["/usr/bin/supervisord", "-n", "-c", "/etc/supervisor/conf.d/docker/supervisord.conf"]
 
 ENV SERVER_NAME http://{{server_name}}
 ENV PLUGIN_GITHUB_APP_ID {{github_app_id}}
