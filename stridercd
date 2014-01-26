@@ -49,7 +49,7 @@ ENV PLUGIN_GITHUB_APP_SECRET {{github_app_secret}}
 ENV SMTP_HOST smtp.mailgun.org
 ENV SMTP_PORT 587
 ENV SMTP_FROM {{user_email}}
-ENV SMTP_USER {{smtp_user}}
-ENV SMTP_PASS {{smtp_pass}}
+ENV SMTP_USER {{mailgun_username}}
+ENV SMTP_PASS {{mailgun_password}}
 
 EXPOSE 3000
