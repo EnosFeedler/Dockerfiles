@@ -38,7 +38,7 @@ RUN \
     /usr/bin/mongod --smallfiles --fork --logpath mongo.log ;\
     sleep 2 ;\
     /src/bin/strider addUser --email {{user_email}} --password {{user_password}} --admin true ;\
-    /usr/bin/mongod --shutdown ;\
+    /usr/bin/mongod --shutdown ;
 
 CMD  ["/usr/bin/supervisord", "-n"]
 
