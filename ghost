@@ -58,6 +58,9 @@ ENV mailgun_password {{mailgun_password}}
 RUN wget -O - {{ghostconfig}} | tar -C /ghost/ -zxv
 RUN cd ghost; node ghostconfig.js
 
+# mount database from host
+VOLUME ["{{sqlite}}"]
+
 EXPOSE 2368
 CMD cd ghost; \
     npm start
