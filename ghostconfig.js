@@ -23,7 +23,7 @@ var config = {
       },
       debug: false
     },
-    server: { 
+    server: {
       host: '0.0.0.0',
       port: '2368'
     }

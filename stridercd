@@ -51,4 +51,7 @@ ENV SMTP_FROM {{user_email}}
 ENV SMTP_USER {{mailgun_username}}
 ENV SMTP_PASS {{mailgun_password}}
 
+# mount database from host
+VOLUME ["{{mongodb}}"]
+
 EXPOSE 3000
