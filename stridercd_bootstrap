@@ -26,10 +26,11 @@ RUN cd /src && npm install
 
 # node source
 RUN wget -O - {{source}} | tar -C /src/ -zxv
-RUN chown -R strider /src
 RUN chmod u+x /src/bin/strider
 RUN \
     /usr/bin/mongod --smallfiles --fork --logpath mongo.log ;\
     sleep 2 ;\
     /src/bin/strider addUser --email {{user_email}} --password {{user_password}} --admin true ;\
+    sleep 2 ;\
+    echo "db.users.find()" | mongo localhost/strider-foss ;\
     /usr/bin/mongod --shutdown ;
