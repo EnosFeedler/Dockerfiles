@@ -17,34 +17,9 @@ RUN mkdir -p /data/db
 RUN locale-gen en_US en_US.UTF-8
 RUN curl https://raw.github.com/isaacs/nave/master/nave.sh > /bin/nave && chmod a+x /bin/nave
 RUN nave usemain stable
-RUN echo 'root:{{user_password}}' | chpasswd
-
-# supervisor config
-RUN mkdir -p /etc/supervisor/conf.d
-RUN wget -O - {{supervisor_conf}} | tar -C /etc/supervisor/conf.d/ -zxv
-
-# node deps
-RUN mkdir /src
-RUN wget -O - {{package}} | tar -C /src/ -zxv
-RUN cd /src && npm install
-
-# node source
-RUN wget -O - {{source}} | tar -C /src/ -zxv
-RUN chown -R strider /src
-RUN chmod u+x /src/bin/strider
-
-CMD  ["/usr/bin/supervisord", "-n", "-c", "/etc/supervisor/conf.d/docker/supervisord.conf"]
-
-ENV SERVER_NAME http://{{server_name}}
-ENV PLUGIN_GITHUB_APP_ID {{github_app_id}}
-ENV PLUGIN_GITHUB_APP_SECRET {{github_app_secret}}
-ENV SMTP_HOST smtp.mailgun.org
-ENV SMTP_PORT 587
-ENV SMTP_FROM {{user_email}}
-ENV SMTP_USER {{mailgun_username}}
-ENV SMTP_PASS {{mailgun_password}}
-
-# mount database from host
 VOLUME ["{{mongodb}}"]
-
-EXPOSE 3000
+RUN \
+    /usr/bin/mongod --smallfiles --fork --logpath mongo.log ;\
+    sleep 2 ;\
+    /src/bin/strider addUser --email {{user_email}} --password {{user_password}} --admin true ;\
+    /usr/bin/mongod --shutdown ;
