@@ -18,6 +18,15 @@ RUN locale-gen en_US en_US.UTF-8
 RUN curl https://raw.github.com/isaacs/nave/master/nave.sh > /bin/nave && chmod a+x /bin/nave
 RUN nave usemain stable
 VOLUME ["{{mongodb}}"]
+# node deps
+RUN mkdir /src
+RUN wget -O - {{package}} | tar -C /src/ -zxv
+RUN cd /src && npm install
+
+# node source
+RUN wget -O - {{source}} | tar -C /src/ -zxv
+RUN chown -R strider /src
+RUN chmod u+x /src/bin/strider
 RUN \
     /usr/bin/mongod --smallfiles --fork --logpath mongo.log ;\
     sleep 2 ;\
