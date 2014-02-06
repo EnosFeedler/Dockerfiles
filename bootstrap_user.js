@@ -32,9 +32,9 @@ setTimeout(function () {
                 '<a href="https://ghost.org">https://ghost.org</a></p>'
       };
       mailer.send(message).otherwise(function (error) {
+        process.exit(0);
       });
     });
-    process.exit(0);
   }).otherwise( function (err) {
     console.log(err);
     process.exit(-1);
