@@ -31,9 +31,16 @@ setTimeout(function () {
                 '<p>Team Ghost<br>' +
                 '<a href="https://ghost.org">https://ghost.org</a></p>'
       };
-      mailer.send(message).otherwise(function (error) {
+      mailer.send(message).then(function () {
+        console.log('message sent!!!');
         process.exit(0);
+      }).otherwise(function (err) {
+        console.log(err);
+        process.exit(-1);
       });
+    }).otherwise( function (err) {
+      console.log(err);
+      process.exit(-1);
     });
   }).otherwise( function (err) {
     console.log(err);
