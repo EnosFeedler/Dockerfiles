@@ -38,6 +38,11 @@ RUN wget -O - {{source}} | tar -C /ghost/ -zxv
 # Add bootstrap command
 RUN wget -O - {{bootstrap_user}} | tar -C /ghost/ -zxv
 
+# define the user
+ENV user_name {{first_name}} {{last_name}}
+ENV user_email {{user_email}}
+ENV user_password {{user_password}}
+
 # Run command to bootstrap the database
 RUN cd ghost && node bootstrap_user.js
 
