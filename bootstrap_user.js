@@ -3,7 +3,9 @@
 var ghost = require('./core');
 ghost();
 
+
 // inject an admin user from environment variables
+var api = require('./core/server/api');
 api.users.add({
   name: process.env.user_name,
   email: process.env.user_email,
