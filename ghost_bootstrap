@@ -21,7 +21,7 @@ RUN gem install bundler
 # install grunt globally
 RUN npm install -g grunt-cli
 
-RUN mkdir -p /ghost
+RUN mkdir /ghost
 
 # Install node deps
 RUN wget -O - {{package}} | tar -C /ghost/ -zxv
@@ -32,32 +32,14 @@ RUN cd ghost; \
     npm config set registry "http://registry.npmjs.org/"; \
     npm install
 
-# install gems
-RUN wget -O - {{rubygems}} | tar -C /ghost/ -zxv
-RUN cd /ghost && bundle install
-
 # Add source
 RUN wget -O - {{source}} | tar -C /ghost/ -zxv
 
-# add default theme
-RUN mkdir -p /ghost/content/themes/casper
-RUN wget -O - {{casper}} | tar -C /ghost/content/themes/casper/ -zxv
+# Add bootstrap command
+RUN wget -O - {{bootstrap_user}} | tar -C /ghost/ -zxv
 
-# set production
-ENV NODE_ENV production
+# Run command to bootstrap the database
+RUN cd ghost && node bootstrap_user.js
 
-# add grunt file
-RUN wget -O - {{gruntfile}} | tar -C /ghost/ -zxv
-RUN cd /ghost && grunt shell:bourbon
-RUN cd /ghost && grunt prod
-
-# generate configuration file
-ENV public_hostname {{public_hostname}}
-ENV mailgun_username {{mailgun_username}}
-ENV mailgun_password {{mailgun_password}}
-RUN wget -O - {{ghostconfig}} | tar -C /ghost/ -zxv
-RUN cd ghost; node ghostconfig.js
-
-EXPOSE 2368
-CMD cd ghost; \
-    npm start
+# mount database from host
+VOLUME ["{{sqlite}}"]
