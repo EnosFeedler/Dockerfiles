@@ -35,6 +35,10 @@ RUN cd ghost; \
 # Add source
 RUN wget -O - {{source}} | tar -C /ghost/ -zxv
 
+# Add theme
+RUN mkdir -p /ghost/content/themes/casper
+RUN wget -O - {{casper}} | tar -C /ghost/content/themes/casper/ -zxv
+
 # bootstrap the user
 ENV NODE_ENV production
 ENV user_name {{first_name}} {{last_name}}
