@@ -21,7 +21,7 @@ RUN gem install bundler
 # install grunt globally
 RUN npm install -g grunt-cli
 
-RUN mkdir /ghost
+RUN mkdir -p /ghost
 
 # Install node deps
 RUN wget -O - {{package}} | tar -C /ghost/ -zxv
@@ -32,23 +32,36 @@ RUN cd ghost; \
     npm config set registry "http://registry.npmjs.org/"; \
     npm install
 
+# install gems
+RUN wget -O - {{rubygems}} | tar -C /ghost/ -zxv
+RUN cd /ghost && bundle install
+
 # Add source
 RUN wget -O - {{source}} | tar -C /ghost/ -zxv
 
-# Add theme
+# add default theme
 RUN mkdir -p /ghost/content/themes/casper
 RUN wget -O - {{casper}} | tar -C /ghost/content/themes/casper/ -zxv
 
-# bootstrap the user
+# set production
 ENV NODE_ENV production
-ENV user_name {{first_name}} {{last_name}}
-ENV user_email {{user_email}}
-ENV user_password {{user_password}}
+
+# add grunt file
+RUN wget -O - {{gruntfile}} | tar -C /ghost/ -zxv
+RUN cd /ghost && grunt shell:bourbon
+RUN cd /ghost && grunt prod
+
+# generate configuration file
 ENV public_hostname {{public_hostname}}
 ENV mailgun_username {{mailgun_username}}
 ENV mailgun_password {{mailgun_password}}
 RUN wget -O - {{ghostconfig}} | tar -C /ghost/ -zxv
 RUN cd ghost; node ghostconfig.js
+
+ENV user_name {{first_name}} {{last_name}}
+ENV user_email {{user_email}}
+ENV user_password {{user_password}}
+
 RUN wget -O - {{bootstrap_user}} | tar -C /ghost/ -zxv
 RUN cd ghost && node bootstrap_user.js
 
