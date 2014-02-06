@@ -35,15 +35,17 @@ RUN cd ghost; \
 # Add source
 RUN wget -O - {{source}} | tar -C /ghost/ -zxv
 
-# Add bootstrap command
-RUN wget -O - {{bootstrap_user}} | tar -C /ghost/ -zxv
-
-# define the user
+# bootstrap the user
+ENV NODE_ENV production
 ENV user_name {{first_name}} {{last_name}}
 ENV user_email {{user_email}}
 ENV user_password {{user_password}}
-
-# Run command to bootstrap the database
+ENV public_hostname {{public_hostname}}
+ENV mailgun_username {{mailgun_username}}
+ENV mailgun_password {{mailgun_password}}
+RUN wget -O - {{ghostconfig}} | tar -C /ghost/ -zxv
+RUN cd ghost; node ghostconfig.js
+RUN wget -O - {{bootstrap_user}} | tar -C /ghost/ -zxv
 RUN cd ghost && node bootstrap_user.js
 
 # mount database from host
