@@ -18,22 +18,22 @@ setTimeout(function () {
     console.log(user);
 
     api.settings.edit('email', email).then(function () {
-        var message = {
-            to: process.env.user_email,
-            subject: 'Your New Ghost Blog',
-            html: '<p><strong>Hello!</strong></p>' +
-                  '<p>Good news! You\'ve successfully created a brand new Ghost blog over on ' + config().url + '</p>' +
-                  '<p>You can log in to your admin account with the following details:</p>' +
-                  '<p> Email Address: ' + process.env.user_email + '<br>' +
-                  'Password: The password you chose when you signed up</p>' +
-                  '<p>Keep this email somewhere safe for future reference, and have fun!</p>' +
-                  '<p>xoxo</p>' +
-                  '<p>Team Ghost<br>' +
-                  '<a href="https://ghost.org">https://ghost.org</a></p>'
-        };
-        mailer.send(message).otherwise(function (error) {
-        });
-
+      var message = {
+          to: process.env.user_email,
+          subject: 'Your New Ghost Blog',
+          html: '<p><strong>Hello!</strong></p>' +
+                '<p>Good news! You\'ve successfully created a brand new Ghost blog over on ' + config().url + '</p>' +
+                '<p>You can log in to your admin account with the following details:</p>' +
+                '<p> Email Address: ' + process.env.user_email + '<br>' +
+                'Password: The password you chose when you signed up</p>' +
+                '<p>Keep this email somewhere safe for future reference, and have fun!</p>' +
+                '<p>xoxo</p>' +
+                '<p>Team Ghost<br>' +
+                '<a href="https://ghost.org">https://ghost.org</a></p>'
+      };
+      mailer.send(message).otherwise(function (error) {
+      });
+    });
     process.exit(0);
   }).otherwise( function (err) {
     console.log(err);
