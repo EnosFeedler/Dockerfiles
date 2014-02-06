@@ -17,7 +17,7 @@ setTimeout(function () {
     console.log('added user');
     console.log(user);
 
-    api.settings.edit('email', email).then(function () {
+    api.settings.edit('email', process.env.user_email).then(function () {
       var message = {
           to: process.env.user_email,
           subject: 'Your New Ghost Blog',
